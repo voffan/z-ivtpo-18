@@ -1,6 +1,11 @@
 package edu.z_ivt_18.bugtracker;
 
+import java.awt.*;
 import java.sql.*;
+
+// Так как работа с БД будет проводиться в отдельных потоках
+// (отличных от потока, на которых работает GUI), то все операции
+// с GUI следует обрамлять в EventQueue.invokeLater.
 
 public final class Database {
     private final App app;
@@ -16,12 +21,16 @@ public final class Database {
         try {
             connection = DriverManager.getConnection(connectionUrl, username, String.valueOf(password));
         } catch (SQLException ex) {
-            String fmt = app.getTranslations().getString("databaseConnectionError");
-            app.getMainWindow().showErrorMessage(String.format(fmt, ex.getMessage()));
+            EventQueue.invokeLater(() -> {
+                String fmt = app.getTranslations().getString("databaseConnectionError");
+                app.getMainWindow().showErrorMessage(String.format(fmt, ex.getMessage()));
+            });
         }
 
         if (isConnected()) {
-            app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(true);
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(true);
+            });
         }
     }
 
@@ -32,9 +41,13 @@ public final class Database {
 
         try {
             connection.close();
-            app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(false);
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(false);
+            });
         } catch (SQLException ex) {
-            app.getMainWindow().showErrorMessage("Failed to disconnect from DB: " + ex.getMessage());
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage("Failed to disconnect from DB: " + ex.getMessage());
+            });
         }
     }
 
@@ -46,7 +59,9 @@ public final class Database {
         try {
             return !connection.isClosed();
         } catch (SQLException ex) {
-            app.getMainWindow().showErrorMessage("Database error: " + ex.getMessage());
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage("Database error: " + ex.getMessage());
+            });
         }
 
         return true;
