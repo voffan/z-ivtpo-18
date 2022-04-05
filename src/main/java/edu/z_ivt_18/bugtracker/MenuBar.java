@@ -5,46 +5,64 @@ import javax.swing.*;
 public final class MenuBar extends JMenuBar {
     private final App app;
 
-    private JMenuItem fileDisconnectItem;
+    private JMenu databaseMenu;
+    private JMenuItem databaseConnectItem;
+    private JMenuItem databaseDisconnectItem;
+    private JMenuItem databaseCloseItem;
+
+    private JMenu helpMenu;
+    private JMenuItem helpAboutItem;
 
     public MenuBar(App app) {
         super();
+
         this.app = app;
 
-        add(createFileMenu());
+        buildDatabaseMenu();
+        buildHelpMenu();
     }
 
-    public void databaseConnected() {
-        if (fileDisconnectItem != null) {
-            fileDisconnectItem.setEnabled(true);
-        }
+    public JMenuItem getDatabaseDisconnectItem() {
+        return databaseDisconnectItem;
     }
 
-    public void databaseDisconnected() {
-        if (fileDisconnectItem != null) {
-            fileDisconnectItem.setEnabled(false);
-        }
+    private void buildDatabaseMenu() {
+        // Database -> Connect...
+        databaseConnectItem = new JMenuItem(app.getTranslations().getString("menu.database.connect"));
+        databaseConnectItem.addActionListener((ev) -> {
+            app.getMainWindow().openDatabaseConnectionDialog();
+        });
+
+        // Database -> Disconnect
+        databaseDisconnectItem = new JMenuItem(app.getTranslations().getString("menu.database.disconnect"));
+        databaseDisconnectItem.setEnabled(false);
+        databaseDisconnectItem.addActionListener((ev) -> {
+            app.getMainWindow().openDatabaseDisconnectionDialog();
+        });
+
+        // Database -> Close
+        databaseCloseItem = new JMenuItem(app.getTranslations().getString("menu.database.close"));
+        databaseCloseItem.addActionListener((ev) -> {
+            Utils.closeWindow(app.getMainWindow());
+        });
+
+        databaseMenu = new JMenu(app.getTranslations().getString("menu.database"));
+        databaseMenu.add(databaseConnectItem);
+        databaseMenu.add(databaseDisconnectItem);
+        databaseMenu.addSeparator();
+        databaseMenu.add(databaseCloseItem);
+        add(databaseMenu);
     }
 
-    private JMenu createFileMenu() {
-        JMenuItem connectItem = new JMenuItem("Connect to database...");
-        connectItem.addActionListener((ev) -> { app.openConnectDialog(); });
+    private void buildHelpMenu() {
+        // Help -> About
+        helpAboutItem = new JMenuItem(app.getTranslations().getString("menu.help.about"));
+        helpAboutItem.addActionListener((ev) -> {
+            app.getMainWindow().showInformationMessage("Under construction.\nNothing to see here.");
+        });
 
-        JMenuItem disconnectItem = new JMenuItem("Disconnect from database");
-        disconnectItem.setEnabled(false);
-        disconnectItem.addActionListener((ev) -> { app.openDisconnectDialog(); });
-
-        JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener((ev) -> { app.exit(); });
-
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.add(connectItem);
-        fileMenu.add(disconnectItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
-
-        fileDisconnectItem = disconnectItem;
-
-        return fileMenu;
+        helpMenu = new JMenu(app.getTranslations().getString("menu.help"));
+        helpMenu.add(helpAboutItem);
+        add(helpMenu);
     }
 }

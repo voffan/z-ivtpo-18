@@ -1,6 +1,5 @@
 package edu.z_ivt_18.bugtracker;
 
-import javax.swing.*;
 import java.sql.*;
 
 public final class Database {
@@ -11,20 +10,31 @@ public final class Database {
         this.app = app;
     }
 
-    public void connect(String url, String username, char[] password) throws SQLException {
+    public void connect(String url, String username, char[] password) {
         String connectionUrl = "jdbc:mariadb://" + url + "/bug_tracker";
-        connection = DriverManager.getConnection(connectionUrl, username, String.valueOf(password));
+
+        try {
+            connection = DriverManager.getConnection(connectionUrl, username, String.valueOf(password));
+        } catch (SQLException ex) {
+            String fmt = app.getTranslations().getString("databaseConnectionError");
+            app.getMainWindow().showErrorMessage(String.format(fmt, ex.getMessage()));
+        }
+
+        if (isConnected()) {
+            app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(true);
+        }
     }
 
     public void disconnect() {
+        if (!isConnected()) {
+            return;
+        }
+
         try {
-            if (connection != null) {
-                if (!connection.isClosed()) {
-                    connection.close();
-                }
-            }
+            connection.close();
+            app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(false);
         } catch (SQLException ex) {
-            System.err.println("Failed to disconnect from DB: " + ex.getMessage());
+            app.getMainWindow().showErrorMessage("Failed to disconnect from DB: " + ex.getMessage());
         }
     }
 
@@ -34,9 +44,9 @@ public final class Database {
         }
 
         try {
-            return connection.isClosed() == false;
+            return !connection.isClosed();
         } catch (SQLException ex) {
-            
+            app.getMainWindow().showErrorMessage("Database error: " + ex.getMessage());
         }
 
         return true;

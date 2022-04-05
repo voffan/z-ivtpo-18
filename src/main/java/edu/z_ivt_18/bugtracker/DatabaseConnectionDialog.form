@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="edu.z_ivt_18.bugtracker.DatabaseConnectionDialog">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="8" left="8" bottom="8" right="8"/>
+    <constraints>
+      <xy x="20" y="20" width="521" height="424"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="b974b" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="line" title-resource-bundle="translations" title-key="connection.dbConnectionInfo"/>
+        <children>
+          <component id="2d3bd" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="f38bb"/>
+              <text resource-bundle="translations" key="connection.url"/>
+            </properties>
+          </component>
+          <component id="565ff" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="631ed"/>
+              <text resource-bundle="translations" key="connection.username"/>
+            </properties>
+          </component>
+          <component id="79ea0" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="8fc64"/>
+              <text resource-bundle="translations" key="connection.password"/>
+            </properties>
+          </component>
+          <component id="f38bb" class="javax.swing.JTextField" binding="urlField">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="631ed" class="javax.swing.JTextField" binding="usernameField">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="8fc64" class="javax.swing.JPasswordField" binding="passwordField">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <clientProperties>
+              <JPasswordField.cutCopyAllowed class="java.lang.Boolean" value="true"/>
+            </clientProperties>
+          </component>
+          <component id="bb316" class="javax.swing.JCheckBox" binding="rememberCredentialsCheckBox" default-binding="true">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="translations" key="connection.remember"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <vspacer id="b3b7a">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <minimum-size width="-1" height="100"/>
+          </grid>
+        </constraints>
+      </vspacer>
+      <grid id="e279c" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="56ed6" class="javax.swing.JButton" binding="connectButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text resource-bundle="translations" key="connection.connect"/>
+            </properties>
+          </component>
+          <component id="4c8c0" class="javax.swing.JButton" binding="cancelButton">
+            <constraints/>
+            <properties>
+              <text resource-bundle="translations" key="cancel"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
