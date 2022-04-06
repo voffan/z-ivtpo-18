@@ -1,19 +1,19 @@
 package edu.z_ivt_18.bugtracker;
 
 import javax.swing.*;
+import java.awt.*;
 
 public final class MainWindow extends JFrame {
     private final App app;
     private final MenuBar menuBar;
-
-    private JPanel mainPanel;
 
     public MainWindow(App app) {
         super(app.getTranslations().getString("title"));
 
         this.app = app;
 
-        setContentPane(mainPanel);
+        getContentPane().add(new DisconnectedView(), BorderLayout.CENTER);
+
         setSize(1000, 750);
         setLocationRelativeTo(null);
 
