@@ -5,6 +5,8 @@ import java.awt.event.WindowEvent;
 
 public final class Utils {
     public static void closeWindow(Window window) {
-        window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+        EventQueue.invokeLater(() -> {
+            window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+        });
     }
 }

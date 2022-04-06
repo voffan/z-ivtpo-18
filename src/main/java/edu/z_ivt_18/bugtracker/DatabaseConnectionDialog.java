@@ -65,28 +65,29 @@ public class DatabaseConnectionDialog extends JDialog {
             Arrays.fill(passwordBytes, (byte)0);
         }
 
-        // Попытаться подключиться к БД, и закрыть это окно, если получилось
-
+        // Отобразить шкалу прогресса
         progressBar.setVisible(true);
 
+        // Создаём отдельный поток, чтобы подключиться к БД
         Thread thread = new Thread(() -> {
             app.getDatabase().connect(url, username, password);
             Arrays.fill(password, '\0');
-            EventQueue.invokeLater(() -> connectionFinished());
+
+            // По завершении кода выше возвращаемся в поток GUI
+            EventQueue.invokeLater(() -> {
+                progressBar.setVisible(false);
+
+                if (app.getDatabase().isConnected()) {
+                    Utils.closeWindow(this);
+                }
+            });
         });
 
+        // Запустить подключение к БД в отдельном потоке
         thread.start();
     }
 
     private void cancelButtonAction() {
         Utils.closeWindow(this);
-    }
-
-    private void connectionFinished() {
-        progressBar.setVisible(false);
-
-        if (app.getDatabase().isConnected()) {
-            Utils.closeWindow(this);
-        }
     }
 }
