@@ -6,13 +6,16 @@ import java.awt.*;
 public final class MainWindow extends JFrame {
     private final App app;
     private final MenuBar menuBar;
+    private final Container content;
+
+    public static final String VIEW_DISCONNECTED = "disconnected";
+    public static final String VIEW_LOGIN = "login";
+    public static final String VIEW_TRACKER = "tracker";
 
     public MainWindow(App app) {
         super(app.getTranslations().getString("title"));
 
         this.app = app;
-
-        getContentPane().add(new DisconnectedView(), BorderLayout.CENTER);
 
         setSize(1000, 750);
         setLocationRelativeTo(null);
@@ -21,6 +24,12 @@ public final class MainWindow extends JFrame {
 
         menuBar = new MenuBar(app);
         setJMenuBar(menuBar);
+
+        content = getContentPane();
+        content.setLayout(new CardLayout());
+        content.add(new DisconnectedView(), VIEW_DISCONNECTED);
+        content.add(new LoginView(app), VIEW_LOGIN);
+        content.add(new TrackerView(), VIEW_TRACKER);
     }
 
     public void openDatabaseConnectionDialog() {
@@ -59,5 +68,10 @@ public final class MainWindow extends JFrame {
 
     public MenuBar getMyMenuBar() {
         return menuBar;
+    }
+
+    public void switchView(String viewId) {
+        CardLayout cardLayout = (CardLayout) content.getLayout();
+        cardLayout.show(content, viewId);
     }
 }

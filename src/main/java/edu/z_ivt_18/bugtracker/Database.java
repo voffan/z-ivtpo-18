@@ -30,6 +30,7 @@ public final class Database {
         if (isConnected()) {
             EventQueue.invokeLater(() -> {
                 app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(true);
+                app.getMainWindow().switchView(MainWindow.VIEW_LOGIN);
             });
         }
     }
@@ -43,6 +44,7 @@ public final class Database {
             connection.close();
             EventQueue.invokeLater(() -> {
                 app.getMainWindow().getMyMenuBar().getDatabaseDisconnectItem().setEnabled(false);
+                app.getMainWindow().switchView(MainWindow.VIEW_DISCONNECTED);
             });
         } catch (SQLException ex) {
             EventQueue.invokeLater(() -> {
@@ -65,5 +67,48 @@ public final class Database {
         }
 
         return true;
+    }
+
+    public void login(String username, char[] password) {
+        if (!isConnected()) {
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage("Can't login, not connected to database.");
+            });
+
+            return;
+        }
+
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(String.join("\n",
+                "SELECT * FROM `User`",
+                "WHERE `Login` = \"" + username + "\""
+            ));
+
+            if (!rs.first()) {
+                EventQueue.invokeLater(() -> {
+                    app.getMainWindow().showErrorMessage("User " + username + " is not found.");
+                });
+                return;
+            }
+
+            // Пароль открытым текстом это зло, надо с этим что-то делать.
+            if (!rs.getString("Pwd").equals(String.valueOf(password))) {
+                EventQueue.invokeLater(() -> {
+                    app.getMainWindow().showErrorMessage("Incorrect password.");
+                });
+                return;
+            }
+
+            st.close();
+
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().switchView(MainWindow.VIEW_TRACKER);
+            });
+        } catch (SQLException ex) {
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage("SQL error: " + ex.getMessage());
+            });
+        }
     }
 }
