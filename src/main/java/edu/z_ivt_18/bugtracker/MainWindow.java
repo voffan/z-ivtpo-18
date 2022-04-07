@@ -17,7 +17,7 @@ public final class MainWindow extends JFrame {
 
         this.app = app;
 
-        setSize(1000, 750);
+        setSize(600, 750);
         setLocationRelativeTo(null);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -29,7 +29,7 @@ public final class MainWindow extends JFrame {
         content.setLayout(new CardLayout());
         content.add(new DisconnectedView(), VIEW_DISCONNECTED);
         content.add(new LoginView(app), VIEW_LOGIN);
-        content.add(new TrackerView(), VIEW_TRACKER);
+        content.add(new TrackerView(app), VIEW_TRACKER);
     }
 
     public void openDatabaseConnectionDialog() {

@@ -2,6 +2,8 @@ package edu.z_ivt_18.bugtracker;
 
 import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // Так как работа с БД будет проводиться в отдельных потоках
 // (отличных от потока, на которых работает GUI), то все операции
@@ -108,6 +110,65 @@ public final class Database {
         } catch (SQLException ex) {
             EventQueue.invokeLater(() -> {
                 app.getMainWindow().showErrorMessage("SQL error: " + ex.getMessage());
+            });
+        }
+    }
+
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM `User`");
+
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getInt("Id"),
+                    rs.getString("Login"),
+                    rs.getString("Name")
+                ));
+            }
+
+            st.close();
+        } catch (SQLException ex) {
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage("SQL error: " + ex.getMessage());
+            });
+        } catch (Exception ex) {
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage(ex.getMessage());
+            });
+        }
+
+        return users;
+    }
+
+    public void addUser(User user) {
+        try {
+            Statement st = connection.createStatement();
+
+            String fmt = String.join("\n",
+                "INSERT INTO `User` (",
+                "  `Name`, `Login`, `Pwd`, `PositionId`",
+                ") VALUES (",
+                "  \"%s\", \"%s\", \"%s\", %d",
+                ")"
+            );
+
+            st.executeQuery(String.format(fmt,
+                user.getFullName(),
+                user.getUsername(),
+                String.valueOf(user.getPassword()),
+                0
+            ));
+            st.close();
+        } catch (SQLException ex) {
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage("SQL error: " + ex.getMessage());
+            });
+        } catch (Exception ex) {
+            EventQueue.invokeLater(() -> {
+                app.getMainWindow().showErrorMessage(ex.getMessage());
             });
         }
     }

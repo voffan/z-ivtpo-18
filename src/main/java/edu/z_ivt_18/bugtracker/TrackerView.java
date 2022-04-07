@@ -7,9 +7,15 @@ import java.awt.event.ItemEvent;
 public class TrackerView extends JPanel {
     private JPanel viewPanel;
     private JComboBox<String> cardComboBox;
-    private JPanel cards;
+    private JPanel content;
 
-    public TrackerView() {
+    private final ReportsView reportsView;
+    private final UsersView usersView;
+
+    private static final String VIEW_REPORTS = "reports";
+    private static final String VIEW_USERS = "users";
+
+    public TrackerView(App app) {
         setLayout(new BorderLayout());
         add(viewPanel, BorderLayout.CENTER);
 
@@ -19,10 +25,22 @@ public class TrackerView extends JPanel {
             cardComboBox.addItem(item);
         }
 
+        reportsView = new ReportsView();
+        usersView = new UsersView(app);
+
+        content.add(reportsView, VIEW_REPORTS);
+        content.add(usersView, VIEW_USERS);
+
         cardComboBox.addItemListener((ev) -> {
             if (ev.getStateChange() == ItemEvent.SELECTED) {
-                CardLayout layout = (CardLayout) cards.getLayout();
-                layout.show(cards, (String) ev.getItem());
+                String view = (String) ev.getItem();
+
+                if (view.equals(VIEW_USERS)) {
+                    usersView.reload();
+                }
+
+                CardLayout layout = (CardLayout) content.getLayout();
+                layout.show(content, view);
             }
         });
     }
