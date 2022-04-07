@@ -33,6 +33,11 @@ public final class MainWindow extends JFrame {
     }
 
     public void openDatabaseConnectionDialog() {
+        if (app.getDatabase().isConnected()) {
+            showInformationMessage("You're already connected to the database. Disconnect first.");
+            return;
+        }
+
         JDialog dialog = new DatabaseConnectionDialog(app);
         dialog.setVisible(true);
     }
