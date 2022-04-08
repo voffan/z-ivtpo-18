@@ -4,5 +4,5 @@ CREATE TABLE Error (
 	Descr VARCHAR(1000) NOT NULL,
 	AuthorId INT,
 	ErrorDate Date NOT NULL,
-	FOREIGN KEY (AuthorId) references Users(Id) ON DELETE SET NULL
+	FOREIGN KEY (AuthorId) references User(Id) ON DELETE SET NULL
 );

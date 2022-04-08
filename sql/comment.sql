@@ -4,6 +4,6 @@ CREATE TABLE Comment (
 	IsSolution TINYINT NOT NULL,
 	AuthorId INT,
 	ErrorId INT NOT NULL,
-	FOREIGN KEY (AuthorId) references Users(Id) ON DELETE SET NULL,
+	FOREIGN KEY (AuthorId) references User(Id) ON DELETE SET NULL,
 	FOREIGN KEY (ErrorId) REFERENCES Error(Id) ON DELETE CASCADE
 );
