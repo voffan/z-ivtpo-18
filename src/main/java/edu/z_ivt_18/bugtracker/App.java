@@ -167,7 +167,7 @@ public class App {
 			Class.forName(driver);
 			return DriverManager.getConnection(url,"root", "1234");
 		} catch (Exception e) {
-			System.out.println("Ошибка подключения! " + e);
+			System.out.println("\u041E\u0448\u0438\u0431\u043A\u0430 \u043F\u043E\u0434\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u044F! " + e);
 		}
 		
 		return null;
@@ -185,7 +185,7 @@ public class App {
 			ps.setString(5, txtErrorDate.getText());
 			ps.execute();
 			
-			JOptionPane.showMessageDialog(null, "Сохранено!");
+			JOptionPane.showMessageDialog(null, "\u0421\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u043E");
 			ShowData();
 		} catch (Exception e) {
 			System.out.println("error: " + e);
@@ -255,8 +255,7 @@ public class App {
 	private void Update(String id) {
 		Connection con = con();
 		try {
-			String query = "update error set code = ?, descr = ?, "
-					+ "authorid = ?, errordate = ? where id = ?";
+			String query = "update error set code = ?, descr = ?, authorid = ?, errordate = ? where id = ?";
 			PreparedStatement ps = con.prepareStatement(query);
 			ps.setString(1, txtCode.getText());
 			ps.setString(2, txtDescr.getText());
@@ -267,7 +266,7 @@ public class App {
 			
 			ps.close();
 			con.close();
-			JOptionPane.showMessageDialog(null, "Обновление успешно");
+			JOptionPane.showMessageDialog(null, "\u0423\u0441\u043F\u0435\u0448\u043D\u043E \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u043E");
 			ShowData();
 		} catch (Exception e) {
 			System.out.println("error: " + e);
@@ -284,7 +283,7 @@ public class App {
 			
 			ps.close();
 			con.close();
-			JOptionPane.showMessageDialog(null, "Удалено");
+			JOptionPane.showMessageDialog(null, "\u0423\u0434\u0430\u043B\u0435\u043D\u043E");
 			ShowData();
 		} catch (Exception e) {
 			System.out.println("error: " + e);
