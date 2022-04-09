@@ -5,11 +5,12 @@ package edu.z_ivt_18.bugtracker;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class LoginFrame extends JFrame implements ActionListener {
-
-
 
     Container container=getContentPane();
     JLabel userLabel = new JLabel("USERMANE");
@@ -20,14 +21,11 @@ public class LoginFrame extends JFrame implements ActionListener {
     JButton resetButton = new JButton("RESET");
     JCheckBox showPassword = new JCheckBox("SHOW PASSWORD");
 
-
-
     LoginFrame () {
         setLayoutManeger();
         setLocationAndSize();
         addComponentsToContainer();
         addActionEvent();
-
     }
 
     public void setLayoutManeger () {
@@ -62,9 +60,46 @@ public class LoginFrame extends JFrame implements ActionListener {
         showPassword.addActionListener(this);
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)  {
 
-        if(e.getSource()==loginButton)
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    Connection connection;
+                    String dbuser = "root";
+                    String dbpassw = "1234";
+                    String databaseName = "errors";
+                    String url = "jdbc:mysql://localhost/" + databaseName;
+                    Class.forName("com.mysql.jdbc.Driver");
+                    connection = DriverManager.getConnection(url, dbuser, dbpassw);
+                    Statement st = connection.createStatement();
+                    ResultSet res = st.executeQuery("SELECT * FROM user WHERE Login='" + userTextField.getText() + "' AND Pwd='" + passwordField.getText() + "'");
+                    if (res.next()) {
+                        JOptionPane.showMessageDialog(null, "Uspesho");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nea");
+                    }
+                } catch (Exception f) {
+                    f.printStackTrace();
+                }
+
+
+            }
+
+
+        });
+
+
+    }
+
+}
+
+
+
+
+       /*if(e.getSource()==loginButton)
         {
             String userText;
             String passwordText;
@@ -80,23 +115,5 @@ public class LoginFrame extends JFrame implements ActionListener {
             }
 
         }
-        if(e.getSource()==resetButton)
-        {
-            userTextField.setText("");
-            passwordField.setText("");
-        }
 
-        if(e.getSource()==showPassword)
-        {
-            if(showPassword.isSelected())
-            {
-                passwordField.setEchoChar((char)0);
-            }
-            else
-            {
-                passwordField.setEchoChar('*');
-            }
-        }
-
-    }
-}
+        }*/
